@@ -28,7 +28,7 @@ docker compose up -d --build
 Uses your Pro/Max subscription — no API key needed. Run this once after the first build:
 
 ```bash
-docker exec -it claude-box claude
+docker exec -it -u claude claude-box claude
 ```
 
 Claude Code will print a URL since no browser is available inside the container. Open that URL on any device with a browser (your laptop, phone, etc.), sign in, and the token flows back to the CLI. The credential is saved to `~/.claude/.credentials.json` inside the mounted volume, so it persists across container restarts.
@@ -44,14 +44,14 @@ If you prefer Console API billing, set `ANTHROPIC_API_KEY` in your `.env` file. 
 ### Interactive session
 
 ```bash
-docker exec -it claude-box bash
+docker exec -it -u claude claude-box bash
 claude
 ```
 
 ### Headless one-shot
 
 ```bash
-docker exec claude-box claude -p "Explain what this project does" --output-format json
+docker exec -u claude claude-box claude -p "Explain what this project does" --output-format json
 ```
 
 ### Run against a specific project
@@ -59,7 +59,7 @@ docker exec claude-box claude -p "Explain what this project does" --output-forma
 Place or clone projects into the `./workspace` directory on the host — they appear at `/workspace` inside the container.
 
 ```bash
-docker exec -w /workspace/my-project claude-box claude -p "Find bugs in this codebase"
+docker exec -u claude -w /workspace/my-project claude-box claude -p "Find bugs in this codebase"
 ```
 
 ### Remote control
@@ -68,7 +68,7 @@ docker exec -w /workspace/my-project claude-box claude -p "Find bugs in this cod
 
 ```bash
 # Start a remote-controllable session
-docker exec -it claude-box claude remote-control --name "my-project"
+docker exec -it -u claude claude-box claude remote-control --name "my-project"
 ```
 
 This prints a URL and QR code. Open the URL on any device to send prompts and see results in real time while Claude Code runs locally in the container.

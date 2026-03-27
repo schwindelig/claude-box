@@ -43,8 +43,11 @@ ENV PATH="/home/claude/.local/bin:${PATH}"
 # Ensure ~/.claude exists with correct ownership
 RUN mkdir -p /home/claude/.claude
 
-# Entrypoint handles MCP server registration on every startup
-COPY --chown=claude:claude entrypoint.sh /home/claude/entrypoint.sh
+# Entrypoint fixes permissions and registers MCP servers on every startup
+# Runs as root at startup, then drops to claude user
+USER root
+COPY entrypoint.sh /home/claude/entrypoint.sh
+RUN chmod +x /home/claude/entrypoint.sh
 
 WORKDIR /workspace
 
