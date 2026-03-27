@@ -1,4 +1,8 @@
 .env
-data/
-workspace/
+data/*
+!data/claude/
+data/claude/*
+!data/claude/.gitkeep
+workspace/*
+!workspace/.gitkeep
 bash.exe.stackdump
