@@ -9,8 +9,16 @@ services:
       # Leave blank or remove to use the default OAuth session from ~/.claude/.credentials.json.
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
     volumes:
-      - ./data/claude:/home/claude/.claude
-      - ./workspace:/workspace
+      - type: bind
+        source: ./data/claude
+        target: /home/claude/.claude
+        bind:
+          create_host_path: true
+      - type: bind
+        source: ./workspace
+        target: /workspace
+        bind:
+          create_host_path: true
 
     # Playwright / Chromium support
     shm_size: 2g
