@@ -1,0 +1,21 @@
+services:
+  claude-box:
+    build: .
+    container_name: claude-box
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Zurich
+      # Optional: set an API key to bypass OAuth (uses Console billing instead of Pro/Max plan).
+      # Leave blank or remove to use the default OAuth session from ~/.claude/.credentials.json.
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    volumes:
+      - ./data/claude:/home/claude/.claude
+      - ./workspace:/workspace
+
+    # Playwright / Chromium support
+    shm_size: 2g
+    cap_add:
+      - SYS_ADMIN
+      - SYS_PTRACE
+    security_opt:
+      - seccomp=unconfined
